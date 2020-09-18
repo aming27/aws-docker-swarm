@@ -1,0 +1,93 @@
+version: '3.2'
+services:
+  elasticsearch:
+    labels:
+      - module_name=elasticseach
+      - module_type=elk
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.0
+    environment:
+      - VIRTUAL_HOST=.com
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
+      - bootstrap.memory_lock=false
+      #- node.name=elasticsearch
+      - cluster.name=pre-elk-elasticsearch
+      - discovery.seed_hosts=elasticsearch2
+      - cluster.initial_master_nodes=elasticsearch,elasticsearch2
+    volumes:
+      #- esdata1:/usr/share/elasticsearch/data
+      
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    deploy:
+       #placement:
+       # constraints:
+       #   - node.labels.srv == preawsdocker003
+      # resources:
+        # ulimits:
+        #   memlock:
+        #     soft: -1
+        #     hard: -1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - 9200:9200
+    networks:
+      adev-network:
+        aliases:
+          - elasticseach
+      
+
+  
+
+volumes:
+  #esdata1:
+  
+
+networks:
+  adev-network-network:
+    external: true
+  backend-network:
+    external: true
+  frontend-network:
+    external: true
+
+# elasticsearch2:
+#     labels:
+#       - module_name=elasticseach2
+#       - module_type=elk
+#     image: docker.elastic.co/elasticsearch/elasticsearch:7.4.0
+#     environment:
+#       - ES_JAVA_OPTS=-Xms2g -Xmx2g
+#       - bootstrap.memory_lock=false
+#       - node.name=elasticsearch2
+#       - cluster.name=pre-elk-elasticsearch
+#       # - discovery.seed_providers=
+#       - discovery.seed_hosts=elasticsearch
+#       # - discovery.zen.ping.unicast.hosts=elasticsearch
+#       - cluster.initial_master_nodes=elasticsearch,elasticsearch2
+#     logging:
+#       driver: "json-file"
+#       options:
+#         max-size: "100m"
+#         max-file: "10"
+#     deploy:
+#       placement:
+#         constraints:
+#           - node.labels.srv == preawsdocker001
+#       restart_policy:
+#         condition: on-failure
+#     volumes:
+#       - esdata2:/usr/share/elasticsearch/data
+#     networks:
+#       common-network:
+#         aliases:
+#           - elasticseach2
+#       frontend-network:
+#         aliases:
+#           - elasticseach2
+#       backend-network:
+#         aliases:
+#           - elasticseach2

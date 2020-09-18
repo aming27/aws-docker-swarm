@@ -1,0 +1,34 @@
+version: '3.2'
+services:
+  filebeat:
+    labels:
+      - module_name=filebeat
+      - module_type=elk
+    user: root
+    image: docker.elastic.co/beats/filebeat:7.4.0
+    hostname: "{{.Node.Hostname}}"
+    environment:
+      - setup.kibana.host=pre-kibana.com:5601
+      - strict.perms=false
+    volumes:
+      - ./conf/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/log/:/mnt/hosts-logs/logs:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+    networks:
+      - adev-network
+      
+
+networks:
+  adev-network:
+    external: true
+  

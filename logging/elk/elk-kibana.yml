@@ -1,0 +1,36 @@
+version: '3.2'
+services:
+  kibana:
+    labels:
+      - module_name=kibana
+      - module_type=elk
+    image: docker.elastic.co/kibana/kibana:7.4.0
+    environment:
+      SERVER_NAME: pre-kibana
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      VIRTUAL_HOST: elk-kibana.com
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    deploy:
+      
+      restart_policy:
+        condition: on-failure
+    ports:
+      - 5601:5601
+    volumes:
+      - kibana:/usr/share/kibana/data
+    networks:
+      adev-network:
+        aliases:
+          - kibana
+      
+volumes:
+  kibana:
+
+networks:
+  adev-network:
+    external: true
+  

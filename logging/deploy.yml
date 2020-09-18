@@ -1,0 +1,66 @@
+- hosts: all
+  remote_user: root
+  vars:
+    BASE_DIR: "{{ BASE_DIR }}"
+  tasks:
+ 
+    - name: Deploy ELK stack
+      shell: docker stack deploy {{ yml.itm}}.yml {{ yml.item }} --with-registry-auth {{ stack.itm}} {{ stack.item}}  
+      with_items:       
+        - yml: elk-filebeat
+        - yml: elk-elasticsearch
+        - yml: elk-kibana
+        - yml: elk-logstash
+        - stack: stack-filebeat
+        - stack: stack-elastisearch
+        - stack: stack-kibana
+        - stack: stack-logstash
+  
+
+
+
+# - hosts: all
+#   remote_user: root
+#   vars:
+      
+#       BASE_DIR: "{{ BASE_DIR }}"
+#   tasks:
+
+
+#     - name: Deploy elk-elasticsearch
+#       shell: "docker stack deploy -c {{ BASE_DIR }}/elk-elasticsearch.yml --with-registry-auth elasticsearch"
+      
+#       register: debug
+#     - name: Print variables
+#       debug:
+#         var: debug
+
+#     - name: Deploy elk-filebeat
+#       shell: "docker stack deploy -c {{ BASE_DIR }}/elk-filebeat.yml --with-registry-auth filebeat"
+      
+#       register: debug
+#     - name: Print variables
+#       debug:
+#         var: debug
+
+#     - name: Deploy elk-kibana
+#       shell: "docker stack deploy -c {{ BASE_DIR }}/elk-kibana.yml --with-registry-auth kibana"
+      
+#       register: debug
+#     - name: Print variables
+#       debug:
+#         var: debug
+
+#     - name: Deploy elk-logstash
+#       shell: "docker stack deploy -c {{ BASE_DIR }}/elk-logstash.yml --with-registry-auth logstash"
+      
+#       register: debug
+#     - name: Print variables
+#       debug:
+#         var: debug
+
+
+
+
+
+

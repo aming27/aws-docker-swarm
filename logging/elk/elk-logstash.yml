@@ -1,0 +1,35 @@
+version: '3.2'
+services:
+  logstash:
+    labels:
+      - module_name=logstash
+      - module_type=elk
+    image: docker.elastic.co/logstash/logstash:7.4.0
+    environment:
+      - xpack.monitoring.elasticsearch.hosts="http://preawselk.com:9200"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    deploy:
+      
+      restart_policy:
+        condition: on-failure
+    ports:
+      - 5044:5044
+      - 9600:9600
+    volumes:
+      - ./conf/logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+     
+    networks:
+      adev-network:
+        aliases:
+          - logstash
+      
+  
+
+networks:
+  adev-network:
+    external: true
+  
