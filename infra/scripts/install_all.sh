@@ -5,7 +5,6 @@
 
 # execute
 
-create_image
 install_infra
 install_swarm
 deploy_app
