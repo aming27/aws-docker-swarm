@@ -1,0 +1,32 @@
+version: "3"
+services:
+  app:
+    image: ${IMAGE}:${IMAGE_TAG}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    deploy:
+      replicas: ${DOCKER_REPLICAS:-1}
+      placement:
+        constraints:
+          - node.labels.srv==${SRV}
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_USER="postgres"
+      - POSTGRES_PASSWORD="mysecret"
+      - POSTGRES_HOST=${FQDNS_RDS}
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB="hello_world"
+      
+    networks:
+      - adev-network
+ 
+
+networks:
+  adev-network:
+    external: true

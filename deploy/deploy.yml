@@ -1,0 +1,37 @@
+- hosts: all
+  remote_user: root
+  vars:
+    REPO_NAME: "{{ REPO_NAME }}"
+    STACK: "{{ STACK_NAME }}"
+    BASE_DIR: "{{ ENVIRONMENT }}"
+    IMAGE: "{{URI_REPO_AWS}}/{{ REPO_NAME }}:{{ IMAGE_TAG }}"
+
+
+  tasks:
+
+
+    - name: Pull latest image
+      shell: "$(aws ecr get-login --no-include-email --region=eu-west-1) && docker pull {{ IMAGE }}"
+
+
+    - name: Update Docker stack
+      shell: "docker stack deploy -c {{ BASE_DIR }}/docker-compose.yml --with-registry-auth {{ STACK }}"
+      environment:
+        SRV: "{{ SRV }}"
+        IMAGE_NAME: "{{ IMAGE}}"
+        IMAGE_TAG: "{{ IMAGE_TAG }}"
+        #VIRTUAL_HOST: "{{ VIRTUAL_HOST }}"
+        DOCKER_REPLICAS: "{{ DOCKER_REPLICAS }}"
+        FQDNS_RDS: "${FQDNS_RDS}"
+      register: debug
+
+
+    - name: Print variables
+      debug:
+        var: debug
+
+
+
+
+
+
