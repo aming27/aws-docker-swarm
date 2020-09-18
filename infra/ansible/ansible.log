@@ -1,0 +1,23 @@
+2020-09-18 17:08:36,044 p=48292 u=alfonso.ming n=ansible | [WARNING]: Could not match supplied host pattern, ignoring: masters
+
+2020-09-18 17:08:36,079 p=48292 u=alfonso.ming n=ansible |  ________________ 
+< PLAY [masters] >
+ ---------------- 
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+2020-09-18 17:08:36,088 p=48292 u=alfonso.ming n=ansible | skipping: no hosts matched
+2020-09-18 17:08:36,112 p=48292 u=alfonso.ming n=ansible |  ____________ 
+< PLAY RECAP >
+ ------------ 
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
